@@ -1,28 +1,20 @@
 <?php
-
+// app/Http/Requests/Customer/UpdateCustomerRequest.php
 namespace App\Http\Requests\Customer;
-
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCustomerRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+    public function authorize(): bool { return true; }
     public function rules(): array
     {
         return [
-            //
+            'name'     => ['sometimes', 'string', 'max:191'],
+            'email'    => ['sometimes', 'email', 'unique:users,email,' . $this->route('id')],
+            'password' => ['nullable', 'string', 'min:8'],
+            'phone'    => ['nullable', 'string', 'max:20'],
+            'avatar'   => ['nullable', 'string'],
+            'status'   => ['nullable', 'boolean'],
         ];
     }
 }
