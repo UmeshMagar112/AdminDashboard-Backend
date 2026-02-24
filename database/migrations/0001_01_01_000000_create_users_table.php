@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone')->nullable()->after('email');
+            $table->string('avatar')->nullable()->after('phone');
+            $table->tinyInteger('status')->default(1)->after('avatar'); // 1=active, 0=inactive
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -45,5 +49,11 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['phone', 'avatar', 'status', 'deleted_at']);
+        });
     }
 };
+
+
+ 
