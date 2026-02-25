@@ -11,10 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coupons', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+      Schema::create('coupons', function (Blueprint $table) {
+    $table->id();
+
+    $table->string('code')->unique();
+    $table->string('name');
+    $table->text('description')->nullable();
+
+    $table->enum('type', ['percentage', 'fixed']);
+    $table->decimal('value', 10, 2);
+
+    $table->decimal('minimum_order_amount', 10, 2)->default(0);
+    $table->decimal('maximum_discount_amount', 10, 2)->nullable();
+
+    $table->integer('usage_limit')->nullable();
+    $table->integer('usage_limit_per_user')->nullable();
+    $table->integer('used_count')->default(0);
+
+    $table->boolean('status')->default(true);
+    $table->boolean('is_single_use')->default(false);
+
+    $table->timestamp('starts_at')->nullable();
+    $table->timestamp('expires_at')->nullable();
+
+    $table->softDeletes();
+    $table->timestamps();
+});
     }
 
     /**

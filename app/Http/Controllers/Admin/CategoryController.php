@@ -20,8 +20,8 @@ class CategoryController extends CrudBaseController
         );
     }
 
-    protected array $withAll = ['parent'];
-    protected array $withCount = ['products'];
-    protected array $loadAll = ['parent', 'children'];
-    protected bool $applyPermission = true;
+    public  array $withAll = ['parent'];
+    public  array $withCount = ['products'];
+    public  array $loadAll = ['parent', 'children'];
+    public  bool $applyPermission = true;
 }

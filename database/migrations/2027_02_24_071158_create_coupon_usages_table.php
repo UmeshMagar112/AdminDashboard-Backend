@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coupon_usages', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+      Schema::create('coupon_usages', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->foreignId('coupon_id')->constrained()->cascadeOnDelete();
+    $table->foreignId('order_id')->constrained()->cascadeOnDelete();
+    $table->timestamps();
+});
     }
 
     /**

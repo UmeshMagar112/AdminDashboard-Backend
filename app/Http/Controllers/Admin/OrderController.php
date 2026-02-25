@@ -1,5 +1,12 @@
 <?php
 // app/Http/Controllers/Admin/OrderController.php
+//
+// Admin CRUD controller for orders.
+// Uses FastApiCrud for the basic REST actions and overrides store/update to:
+//  - calculate line totals and order subtotal/total
+//  - apply coupon discounts and track coupon usage
+//  - reserve inventory quantities
+//  - keep a status history timeline for the order.
 namespace App\Http\Controllers\Admin;
 
 use Anil\FastApiCrud\Controller\CrudBaseController;
@@ -27,10 +34,10 @@ class OrderController extends CrudBaseController
         );
     }
 
-    protected array $withAll = ['user', 'coupon'];
-    protected array $withCount = ['items'];
-    protected array $loadAll = ['user', 'coupon', 'items', 'statusHistories.creator'];
-    protected bool $applyPermission = true;
+    public  array $withAll = ['user', 'coupon'];
+    public  array $withCount = ['items'];
+    public  array $loadAll = ['user', 'coupon', 'items', 'statusHistories.creator'];
+    public  bool $applyPermission = true;
 
     public function store(): JsonResponse
     {

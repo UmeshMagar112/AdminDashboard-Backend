@@ -23,9 +23,9 @@ class InventoryController extends CrudBaseController
         );
     }
 
-    protected array $withAll = ['product', 'variant'];
-    protected array $loadAll = ['product', 'variant', 'transactions.creator'];
-    protected bool $applyPermission = true;
+    public  array $withAll = ['product', 'variant'];
+    public  array $loadAll = ['product', 'variant', 'transactions.creator'];
+    public  bool $applyPermission = true;
 
     // Adjust stock (add/subtract)
     public function adjust(int $id, Request $request): JsonResponse

@@ -1,5 +1,8 @@
 <?php
 // app/Http/Controllers/Admin/DashboardController.php
+//
+// Aggregates key business metrics for the admin dashboard screen.
+// Frontend calls: GET /api/admin/dashboard/stats
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -13,6 +16,10 @@ use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
 {
+    /**
+     * Return summary KPI stats, a 7‑day revenue chart, recent orders,
+     * and top selling products for display in the dashboard UI.
+     */
     public function stats(): JsonResponse
     {
         // Revenue

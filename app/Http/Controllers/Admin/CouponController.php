@@ -21,11 +21,11 @@ class CouponController extends CrudBaseController
         );
     }
 
-    protected array $withCount = ['orders'];
-    protected bool $applyPermission = true;
+    public  array $withCount = ['orders'];
+    public  bool $applyPermission = true;
 
     // Validate coupon by code (for frontend checkout)
-    public function validate(string $code): JsonResponse
+    public function validateCoupon(string $code): JsonResponse
     {
         $coupon = Coupon::where('code', strtoupper($code))->first();
 

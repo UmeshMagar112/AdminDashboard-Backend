@@ -1,5 +1,12 @@
 <?php
 // app/Http/Controllers/Admin/AuthController.php
+//
+// Handles admin panel authentication using Laravel Sanctum.
+// Frontend calls:
+//   POST /api/admin/login   -> login()
+//   POST /api/admin/logout  -> logout()
+//   GET  /api/admin/me      -> me()
+//   PUT  /api/admin/profile -> updateProfile()
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -12,6 +19,10 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    /**
+     * Attempt to log in an admin/manager user and return a long‑lived token.
+     * The frontend stores this token and sends it as a Bearer token.
+     */
     public function login(Request $request): JsonResponse
     {
         $request->validate([

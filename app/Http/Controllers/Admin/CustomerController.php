@@ -20,12 +20,12 @@ class CustomerController extends CrudBaseController
         );
     }
 
-    protected array $withAll = ['roles'];
-    protected array $withCount = ['orders'];
-    protected array $loadAll = ['roles', 'orders'];
-    protected bool $applyPermission = true;
+    public  array $withAll = ['roles'];
+    public  array $withCount = ['orders'];
+    public  array $loadAll = ['roles', 'orders'];
+    public  bool $applyPermission = true;
 
     // Only show customers (not admin users)
-    protected array $scopes = ['role'];
-    protected array $scopeWithValue = ['role' => 'customer'];
+public array $scopeWithValue = ['role' => 'customer'];
+
 }

@@ -1,5 +1,12 @@
 <?php
 // app/Http/Controllers/Admin/ProductController.php
+//
+// Admin CRUD controller for products.
+// Extends FastApiCrud's CrudBaseController to get index/show/update/destroy
+// for free, and overrides store/update when we need custom logic for:
+//  - product images
+//  - variants and their attribute values
+//  - per‑product / per‑variant inventory records
 namespace App\Http\Controllers\Admin;
 
 use Anil\FastApiCrud\Controller\CrudBaseController;
@@ -24,10 +31,10 @@ class ProductController extends CrudBaseController
         );
     }
 
-    protected array $withAll = ['category', 'inventory'];
-    protected array $withCount = ['reviews', 'orderItems'];
-    protected array $loadAll = ['category', 'images', 'variants.attributeValues.attribute', 'inventory', 'reviews'];
-    protected bool $applyPermission = true;
+    public array $withAll = ['category', 'inventory'];
+    public array $withCount = ['reviews', 'orderItems'];
+    public array $loadAll = ['category', 'images', 'variants.attributeValues.attribute', 'inventory', 'reviews'];
+    public bool $applyPermission = true;
 
     // Override store to handle images, variants, inventory
     public function store(): JsonResponse

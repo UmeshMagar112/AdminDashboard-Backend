@@ -1,19 +1,17 @@
 <?php
-
+// app/Http/Resources/Product/ProductImageResource.php
 namespace App\Http\Resources\Product;
-
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductImageResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+    public function toArray($request): array
     {
-        return parent::toArray($request);
+        return [
+            'id'         => $this->id,
+            'image'      => $this->image,
+            'sort_order' => $this->sort_order,
+            'is_primary' => (bool) $this->is_primary,
+        ];
     }
 }

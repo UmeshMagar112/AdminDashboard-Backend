@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('phone')->nullable()->after('email');
-            $table->string('avatar')->nullable()->after('phone');
-            $table->tinyInteger('status')->default(1)->after('avatar'); // 1=active, 0=inactive
+            $table->string('phone')->nullable();
+            $table->string('avatar')->nullable();
+            $table->tinyInteger('status')->default(1); // 1=active, 0=inactive
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

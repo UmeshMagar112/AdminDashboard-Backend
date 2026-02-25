@@ -10,6 +10,7 @@ use App\Models\Review;
 
 class ReviewController extends CrudBaseController
 {
+    
     public function __construct()
     {
         parent::__construct(
@@ -20,7 +21,7 @@ class ReviewController extends CrudBaseController
         );
     }
 
-    protected array $withAll = ['user', 'product'];
-    protected array $loadAll = ['user', 'product', 'order'];
-    protected bool $applyPermission = true;
+    public array $withAll = ['user', 'product'];
+    public array $loadAll = ['user', 'product', 'order'];
+    public bool $applyPermission = true;
 }
