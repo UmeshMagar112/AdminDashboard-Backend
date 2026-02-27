@@ -25,7 +25,6 @@ class AdminUserSeeder extends Seeder
             ]
         );
         
-        // Find role specifically for the 'sanctum' guard
         $adminRole = Role::findByName('admin', $guard);
         $admin->assignRole($adminRole);
 

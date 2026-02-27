@@ -30,11 +30,7 @@ class RolesAndPermissionsSeeder extends Seeder
             // Customers
             'view customers', 'create customers', 'edit customers', 'delete customers',
 
-            // Coupons
-            'view coupons', 'create coupons', 'edit coupons', 'delete coupons',
 
-            // Reviews
-            'view reviews', 'edit reviews', 'delete reviews',
 
             // Inventory
             'view inventory', 'edit inventory', 'adjust inventory',
@@ -62,8 +58,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'view products', 'create products', 'edit products',
             'view orders', 'edit orders',
             'view customers',
-            'view coupons', 'create coupons', 'edit coupons',
-            'view reviews', 'edit reviews',
             'view inventory', 'edit inventory', 'adjust inventory',
         ]);
 

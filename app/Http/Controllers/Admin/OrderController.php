@@ -13,7 +13,6 @@ use Anil\FastApiCrud\Controller\CrudBaseController;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Requests\Order\UpdateOrderRequest;
 use App\Http\Resources\Order\OrderResource;
-use App\Models\Coupon;
 use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
@@ -34,9 +33,9 @@ class OrderController extends CrudBaseController
         );
     }
 
-    public  array $withAll = ['user', 'coupon'];
+    public  array $withAll = ['user'];
     public  array $withCount = ['items'];
-    public  array $loadAll = ['user', 'coupon', 'items', 'statusHistories.creator'];
+    public  array $loadAll = ['user', 'items', 'statusHistories.creator'];
     public  bool $applyPermission = true;
 
     public function store(): JsonResponse
@@ -71,23 +70,13 @@ class OrderController extends CrudBaseController
                 ];
             }
 
-            // Coupon discount
             $discountAmount = 0;
-            $coupon = null;
-            if (!empty($data['coupon_code'])) {
-                $coupon = Coupon::where('code', $data['coupon_code'])->first();
-                if ($coupon && $coupon->is_valid) {
-                    $discountAmount = $coupon->calculateDiscount($subtotal);
-                }
-            }
-
-            $shippingAmount = 0; // Can add shipping logic here
-            $taxAmount      = 0; // Can add tax logic here
+            $shippingAmount = 0; 
+            $taxAmount      = 0; 
             $total          = $subtotal - $discountAmount + $shippingAmount + $taxAmount;
 
             $order = Order::create([
                 'user_id'          => $data['user_id'],
-                'coupon_id'        => $coupon?->id,
                 'payment_method'   => $data['payment_method'] ?? null,
                 'subtotal'         => $subtotal,
                 'discount_amount'  => $discountAmount,
@@ -117,11 +106,6 @@ class OrderController extends CrudBaseController
                 }
             }
 
-            // Track coupon usage
-            if ($coupon) {
-                $coupon->usages()->create(['user_id' => $data['user_id'], 'order_id' => $order->id]);
-                $coupon->increment('used_count');
-            }
 
             // Initial status history
             OrderStatusHistory::create([

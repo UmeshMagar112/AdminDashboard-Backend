@@ -15,7 +15,6 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Inventory;
 use App\Models\Product;
-use App\Models\ProductVariant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -32,8 +31,8 @@ class ProductController extends CrudBaseController
     }
 
     public array $withAll = ['category', 'inventory'];
-    public array $withCount = ['reviews', 'orderItems'];
-    public array $loadAll = ['category', 'images', 'variants.attributeValues.attribute', 'inventory', 'reviews'];
+    public array $withCount = [ 'orderItems'];
+    public array $loadAll = ['category', 'images', 'variants.attributeValues.attribute', 'inventory'];
     public bool $applyPermission = true;
 
     // Override store to handle images, variants, inventory

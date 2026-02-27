@@ -38,7 +38,7 @@ class Category extends Model
         });
     }
 
-    // ─── Relationships ────────────────────────────────────────────────────────
+    // Relationships
 
     public function parent(): BelongsTo
     {
@@ -55,7 +55,7 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
-    // ─── Scopes ───────────────────────────────────────────────────────────────
+    // Scopes
 
     public function scopeActive($query)
     {

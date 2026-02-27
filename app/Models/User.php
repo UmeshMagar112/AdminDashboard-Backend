@@ -32,29 +32,16 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
-            'status'            => 'boolean',
+            'password' => 'hashed',
+            'status' => 'boolean',
         ];
     }
-
-    // ─── Relationships ────────────────────────────────────────────────────────
 
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    public function couponUsages(): HasMany
-    {
-        return $this->hasMany(CouponUsage::class);
-    }
-
-    // ─── Scopes ───────────────────────────────────────────────────────────────
 
     public function scopeActive($query)
     {
@@ -63,11 +50,12 @@ class User extends Authenticatable
 
     public function scopeQueryFilter($query, $search)
     {
-        if (empty($search)) return $query;
+        if (empty($search))
+            return $query;
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%")
-              ->orWhere('email', 'like', "%{$search}%")
-              ->orWhere('phone', 'like', "%{$search}%");
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%");
         });
     }
 }

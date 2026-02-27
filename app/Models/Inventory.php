@@ -53,8 +53,7 @@ class Inventory extends Model
         return $this->available_quantity <= 0;
     }
 
-    // ─── Scopes ───────────────────────────────────────────────────────────────
-
+    // Scopes 
     public function scopeLowStock($query)
     {
         return $query->whereRaw('(quantity - reserved_quantity) <= low_stock_threshold')

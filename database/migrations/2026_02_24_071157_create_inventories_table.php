@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('inventories', function (Blueprint $table) {
-          $table->id();
+            $table->id();
 
-    $table->foreignId('product_id')->constrained()->onDelete('cascade');
-    $table->foreignId('product_variant_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_variant_id')->nullable()->constrained()->onDelete('cascade');
 
-    $table->integer('quantity')->default(0);
-    $table->integer('reserved_quantity')->default(0);
+            $table->integer('quantity')->default(0);
+            $table->integer('reserved_quantity')->default(0);
 
-    $table->integer('low_stock_threshold')->default(5);
+            $table->integer('low_stock_threshold')->default(5);
 
-    $table->timestamps();
+            $table->timestamps();
         });
     }
 

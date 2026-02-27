@@ -1,8 +1,4 @@
 <?php
-// app/Http/Controllers/Admin/DashboardController.php
-//
-// Aggregates key business metrics for the admin dashboard screen.
-// Frontend calls: GET /api/admin/dashboard/stats
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -10,16 +6,11 @@ use App\Http\Resources\Order\OrderResource;
 use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
 {
-    /**
-     * Return summary KPI stats, a 7‑day revenue chart, recent orders,
-     * and top selling products for display in the dashboard UI.
-     */
     public function stats(): JsonResponse
     {
         // Revenue
@@ -45,8 +36,6 @@ class DashboardController extends Controller
         $lowStockCount   = Inventory::lowStock()->count();
         $outOfStockCount = Inventory::outOfStock()->count();
 
-        // Reviews
-        $pendingReviews  = Review::pending()->count();
 
         // Revenue chart (last 7 days)
         $revenueChart = collect(range(6, 0))->map(fn($day) => [
@@ -58,7 +47,7 @@ class DashboardController extends Controller
         ]);
 
         // Recent orders
-        $recentOrders = Order::with(['user', 'coupon'])
+        $recentOrders = Order::with(['user'])
                              ->withCount('items')
                              ->latest()
                              ->take(10)
@@ -92,9 +81,7 @@ class DashboardController extends Controller
                     'low_stock'    => $lowStockCount,
                     'out_of_stock' => $outOfStockCount,
                 ],
-                'reviews' => [
-                    'pending' => $pendingReviews,
-                ],
+ 
             ],
             'revenue_chart' => $revenueChart,
             'recent_orders' => OrderResource::collection($recentOrders),

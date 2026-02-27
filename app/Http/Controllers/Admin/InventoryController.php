@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/Admin/InventoryController.php
 namespace App\Http\Controllers\Admin;
 
 use Anil\FastApiCrud\Controller\CrudBaseController;

@@ -13,7 +13,7 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'order_number', 'user_id', 'coupon_id', 'status', 'payment_status',
+        'order_number', 'user_id', 'status', 'payment_status',
         'payment_method', 'payment_reference',
         'subtotal', 'discount_amount', 'shipping_amount', 'tax_amount', 'total',
         'shipping_name', 'shipping_email', 'shipping_phone',
@@ -22,13 +22,13 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'subtotal'        => 'decimal:2',
+        'subtotal' => 'decimal:2',
         'discount_amount' => 'decimal:2',
         'shipping_amount' => 'decimal:2',
-        'tax_amount'      => 'decimal:2',
-        'total'           => 'decimal:2',
-        'shipped_at'      => 'datetime',
-        'delivered_at'    => 'datetime',
+        'tax_amount' => 'decimal:2',
+        'total' => 'decimal:2',
+        'shipped_at' => 'datetime',
+        'delivered_at' => 'datetime',
     ];
 
     protected static function boot(): void
@@ -41,17 +41,14 @@ class Order extends Model
         });
     }
 
-    // ─── Relationships ────────────────────────────────────────────────────────
+    // Relationships
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function coupon(): BelongsTo
-    {
-        return $this->belongsTo(Coupon::class);
-    }
+
 
     public function items(): HasMany
     {
@@ -63,25 +60,22 @@ class Order extends Model
         return $this->hasMany(OrderStatusHistory::class)->latest();
     }
 
-    // ─── Scopes ───────────────────────────────────────────────────────────────
+    // Scopes
 
     public function scopeQueryFilter($query, $search)
     {
-        if (empty($search)) return $query;
+        if (empty($search))
+            return $query;
         return $query->where(fn($q) => $q->where('order_number', 'like', "%{$search}%")
-                                          ->orWhere('shipping_name', 'like', "%{$search}%")
-                                          ->orWhere('shipping_email', 'like', "%{$search}%"));
+        ->orWhere('shipping_name', 'like', "%{$search}%")
+        ->orWhere('shipping_email', 'like', "%{$search}%"));
     }
 
     public function scopeStatusFilter($query, $status)
     {
-        if (empty($status)) return $query;
+        if (empty($status))
+            return $query;
         return $query->where('status', $status);
     }
 
-    public function scopePaymentStatusFilter($query, $paymentStatus)
-    {
-        if (empty($paymentStatus)) return $query;
-        return $query->where('payment_status', $paymentStatus);
-    }
 }

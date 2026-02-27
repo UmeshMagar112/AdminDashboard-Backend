@@ -13,12 +13,7 @@ class OrderResource extends JsonResource
             'order_number'     => $this->order_number,
             'user_id'          => $this->user_id,
             'customer'         => $this->whenLoaded('user', fn() => new CustomerResource($this->user)),
-            'coupon_id'        => $this->coupon_id,
-            'coupon'           => $this->whenLoaded('coupon', fn() => $this->coupon ? [
-                'id'   => $this->coupon->id,
-                'code' => $this->coupon->code,
-                'name' => $this->coupon->name,
-            ] : null),
+            
             'status'           => $this->status,
             'payment_status'   => $this->payment_status,
             'payment_method'   => $this->payment_method,
