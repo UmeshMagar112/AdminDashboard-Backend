@@ -27,5 +27,4 @@ class CustomerController extends CrudBaseController
 
     // Only show customers (not admin users)
 public array $scopeWithValue = ['role' => 'customer'];
-
 }
