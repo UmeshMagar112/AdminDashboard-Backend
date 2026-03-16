@@ -58,4 +58,12 @@ class User extends Authenticatable
                 ->orWhere('phone', 'like', "%{$search}%");
         });
     }
+
+    public function scopeTrashed($query, $value)
+    {
+        if (!empty($value)) {
+            return $query->onlyTrashed();
+        }
+        return $query;
+    }
 }

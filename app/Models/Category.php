@@ -72,4 +72,12 @@ class Category extends Model
         if (empty($search)) return $query;
         return $query->where('name', 'like', "%{$search}%");
     }
+
+    public function scopeTrashed($query, $value)
+    {
+        if (!empty($value)) {
+            return $query->onlyTrashed();
+        }
+        return $query;
+    }
 }

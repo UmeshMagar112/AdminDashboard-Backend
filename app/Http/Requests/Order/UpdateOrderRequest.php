@@ -9,7 +9,7 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status'             => ['sometimes', 'in:pending,confirmed,processing,shipped,delivered,cancelled,refunded'],
+            'status'             => ['sometimes', 'in:pending,confirmed,processing,shipped,delivered,completed,cancelled,refunded'],
             'payment_status'     => ['sometimes', 'in:unpaid,paid,partial,refunded'],
             'payment_method'     => ['nullable', 'in:cash_on_delivery,stripe,paypal,bank_transfer'],
             'payment_reference'  => ['nullable', 'string'],

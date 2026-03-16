@@ -19,7 +19,9 @@ use App\Models\OrderStatusHistory;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class OrderController extends CrudBaseController
 {
@@ -33,10 +35,26 @@ class OrderController extends CrudBaseController
         );
     }
 
-    public  array $withAll = ['user'];
-    public  array $withCount = ['items'];
-    public  array $loadAll = ['user', 'items', 'statusHistories.creator'];
-    public  bool $applyPermission = true;
+    public array $withAll = ['user'];
+    public array $withCount = ['items'];
+    public array $loadAll = ['user', 'items', 'statusHistories.creator'];
+    public bool $applyPermission = true;
+
+    public function index(): AnonymousResourceCollection
+    {
+        $filters = array_filter([
+            'queryFilter'  => Request::query('search'),
+            'statusFilter' => Request::query('status'),
+            'trashed'      => Request::query('trashed'),
+        ]);
+        if ($filters !== []) {
+            request()->query->add(['filters' => json_encode($filters)]);
+        }
+        if (Request::filled('per_page') && !Request::filled('rowsPerPage')) {
+            request()->query->add(['rowsPerPage' => Request::query('per_page')]);
+        }
+        return parent::index();
+    }
 
     public function store(): JsonResponse
     {
@@ -111,8 +129,8 @@ class OrderController extends CrudBaseController
             OrderStatusHistory::create([
                 'order_id'   => $order->id,
                 'status'     => 'pending',
-                'comment'    => 'Order placed',
-                'created_by' => auth()->id(),
+                'note'       => 'Order placed',
+                'changed_by' => auth()->id(),
             ]);
 
             DB::commit();
@@ -142,8 +160,8 @@ class OrderController extends CrudBaseController
             OrderStatusHistory::create([
                 'order_id'   => $order->id,
                 'status'     => $data['status'],
-                'comment'    => $data['status_comment'] ?? null,
-                'created_by' => auth()->id(),
+                'note'       => $data['status_comment'] ?? null,
+                'changed_by' => auth()->id(),
             ]);
 
             // Update timestamps for shipped/delivered

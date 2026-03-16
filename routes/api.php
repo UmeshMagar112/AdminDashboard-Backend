@@ -27,13 +27,11 @@ Route::prefix('admin')->middleware(['auth:sanctum'])->group(function () {
     Route::controller(CategoryController::class)->prefix('categories')->group(function () {
             Route::get('', 'index');
             Route::post('', 'store');
-            Route::post('bulk-delete', 'delete');
             Route::get('{id}', 'show');
             Route::put('{id}', 'update');
             Route::delete('{id}', 'destroy');
             Route::put('{id}/status', 'changeStatus');
             Route::put('{id}/restore', 'restoreTrashed');
-            Route::post('restore-all', 'restoreAllTrashed');
             Route::delete('{id}/force-delete', 'forceDeleteTrashed');
         }
         );
@@ -42,14 +40,12 @@ Route::prefix('admin')->middleware(['auth:sanctum'])->group(function () {
         Route::controller(ProductController::class)->prefix('products')->group(function () {
             Route::get('', 'index');
             Route::post('', 'store');
-            Route::post('bulk-delete', 'delete');
             Route::get('{id}', 'show');
             Route::put('{id}', 'update');
             Route::delete('{id}', 'destroy');
             Route::put('{id}/status', 'changeStatus');
-            Route::put('{id}/featured', 'changeStatusOtherColumn', ['column' => 'is_featured']);
+            Route::put('{id}/featured', 'changeFeatured');
             Route::put('{id}/restore', 'restoreTrashed');
-            Route::post('restore-all', 'restoreAllTrashed');
             Route::delete('{id}/force-delete', 'forceDeleteTrashed');
         }
         );
@@ -69,13 +65,11 @@ Route::prefix('admin')->middleware(['auth:sanctum'])->group(function () {
         Route::controller(CustomerController::class)->prefix('customers')->group(function () {
             Route::get('', 'index');
             Route::post('', 'store');
-            Route::post('bulk-delete', 'delete');
             Route::get('{id}', 'show');
             Route::put('{id}', 'update');
             Route::delete('{id}', 'destroy');
             Route::put('{id}/status', 'changeStatus');
             Route::put('{id}/restore', 'restoreTrashed');
-            Route::post('restore-all', 'restoreAllTrashed');
             Route::delete('{id}/force-delete', 'forceDeleteTrashed');
         }
         );

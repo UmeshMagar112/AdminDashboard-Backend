@@ -78,4 +78,11 @@ class Order extends Model
         return $query->where('status', $status);
     }
 
+    public function scopeTrashed($query, $value)
+    {
+        if (!empty($value)) {
+            return $query->onlyTrashed();
+        }
+        return $query;
+    }
 }

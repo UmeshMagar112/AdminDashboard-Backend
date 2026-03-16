@@ -38,8 +38,8 @@ class OrderResource extends JsonResource
             'items_count'      => $this->whenCounted('items'),
             'status_histories' => $this->whenLoaded('statusHistories', fn() => $this->statusHistories->map(fn($h) => [
                 'status'     => $h->status,
-                'comment'    => $h->comment,
-                'created_by' => $h->creator?->name,
+                'note'       => $h->note,
+                'changed_by' => $h->creator?->name,
                 'created_at' => $h->created_at?->toDateTimeString(),
             ])),
             'shipped_at'       => $this->shipped_at?->toDateTimeString(),

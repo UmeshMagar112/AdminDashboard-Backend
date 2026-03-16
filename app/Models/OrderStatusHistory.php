@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderStatusHistory extends Model
 {
-    protected $fillable = ['order_id', 'status', 'comment', 'created_by'];
+    protected $fillable = ['order_id', 'status', 'note', 'changed_by'];
 
     public function order(): BelongsTo
     {
@@ -16,6 +16,6 @@ class OrderStatusHistory extends Model
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'changed_by');
     }
 }

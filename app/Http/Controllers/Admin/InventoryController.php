@@ -26,29 +26,39 @@ class InventoryController extends CrudBaseController
     public  array $loadAll = ['product', 'variant', 'transactions.creator'];
     public  bool $applyPermission = true;
 
-    // Adjust stock (add/subtract)
+    // Adjust stock (add / subtract / set) – accepts frontend format: type, quantity, reason
     public function adjust(int $id, Request $request): JsonResponse
     {
         $request->validate([
-            'type'     => ['required', 'in:purchase,adjustment,damage,return'],
-            'quantity' => ['required', 'integer', 'not_in:0'],
+            'type'     => ['required', 'in:add,subtract,set'],
+            'quantity' => ['required', 'numeric', 'min:0'],
+            'reason'   => ['nullable', 'string'],
             'note'     => ['nullable', 'string'],
         ]);
 
         $inventory = Inventory::findOrFail($id);
+        $current = (int) $inventory->quantity;
+        $qty = (int) $request->quantity;
 
-        $newQty = $inventory->quantity + $request->quantity;
-        if ($newQty < 0) {
-            return $this->error('Adjustment would result in negative stock', 422);
+        if ($request->type === 'add') {
+            $newQty = $current + $qty;
+            $delta = $qty;
+        } elseif ($request->type === 'subtract') {
+            $newQty = max(0, $current - $qty);
+            $delta = $newQty - $current;
+        } else {
+            $newQty = $qty;
+            $delta = $newQty - $current;
         }
 
         $inventory->update(['quantity' => $newQty]);
 
+        $note = $request->reason ?: $request->note ?: sprintf('%s: %d', $request->type, $qty);
         InventoryTransaction::create([
             'inventory_id' => $inventory->id,
-            'type'         => $request->type,
-            'quantity'     => $request->quantity,
-            'note'         => $request->note,
+            'type'         => 'adjustment',
+            'quantity'     => $delta,
+            'note'         => $note,
             'created_by'   => auth()->id(),
         ]);
 

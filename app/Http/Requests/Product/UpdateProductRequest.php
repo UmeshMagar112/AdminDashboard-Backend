@@ -12,10 +12,10 @@ class UpdateProductRequest extends FormRequest
     {
         $id = $this->route('id');
         return [
-            'category_id'       => ['sometimes', 'exists:categories,id'],
+            'category_id'       => ['sometimes', 'nullable', 'exists:categories,id'],
             'name'              => ['sometimes', 'string', 'max:191'],
             'slug'              => ['nullable', 'string', 'unique:products,slug,' . $id],
-            'sku'               => ['sometimes', 'string', 'unique:products,sku,' . $id],
+            'sku'               => ['sometimes', 'string', 'max:191', 'unique:products,sku,' . $id],
             'short_description' => ['nullable', 'string'],
             'description'       => ['nullable', 'string'],
             'price'             => ['sometimes', 'numeric', 'min:0'],
@@ -26,7 +26,7 @@ class UpdateProductRequest extends FormRequest
             'is_featured'       => ['nullable', 'boolean'],
             'manage_stock'      => ['nullable', 'boolean'],
             'images'            => ['nullable', 'array'],
-            'images.*.image'    => ['required', 'string'],
+            'images.*.image'    => ['nullable', 'string'],
             'images.*.sort_order' => ['nullable', 'integer'],
             'images.*.is_primary' => ['nullable', 'boolean'],
             'inventory.quantity'            => ['nullable', 'integer', 'min:0'],

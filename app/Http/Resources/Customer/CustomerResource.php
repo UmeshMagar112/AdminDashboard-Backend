@@ -14,6 +14,7 @@ class CustomerResource extends JsonResource
             'phone'        => $this->phone,
             'avatar'       => $this->avatar,
             'status'       => $this->status,
+            'is_active'    => (bool) $this->status,
             'roles'        => $this->whenLoaded('roles', fn() => $this->roles->pluck('name')),
             'orders_count' => $this->whenCounted('orders'),
             'created_at'   => $this->created_at?->toDateTimeString(),

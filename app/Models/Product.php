@@ -118,4 +118,12 @@ class Product extends Model
         [$min, $max] = explode(',', $range);
         return $query->whereBetween('price', [(float)$min, (float)$max]);
     }
+
+    public function scopeTrashed($query, $value)
+    {
+        if (!empty($value)) {
+            return $query->onlyTrashed();
+        }
+        return $query;
+    }
 }
